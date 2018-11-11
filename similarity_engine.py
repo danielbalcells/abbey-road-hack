@@ -106,19 +106,9 @@ def similarity_engine(seed_song,distance_matrix,df,number_of_neighbor=10):
     returndf = df.iloc[a,:]
     return(returndf)
 
-
-#if __name__ == "__main__":
-#    # file = 'features.csv'
-#    seednumber,number_of_neighbor,file = main()
-#    df_distance_var,scaler,df = get_whole_dataset(file)
-#    seed_song = get_seed_song(seednumber,scaler,file)
-#    output = similarity_engine(seed_song,trainingarray,df,number_of_neighbor)
-#    print(output[['isrc','title', 'artist_name', 'spotify_duration_ms']])
-
 def recommend(seed_isrc, number_of_neighbor=50):
     seed_song = get_seed_song(seed_isrc, scaler,  df)
     output = similarity_engine(
         seed_song, df_distance_var, df, number_of_neighbor
     )
     return list(output['isrc'])
-
