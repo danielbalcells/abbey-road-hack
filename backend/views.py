@@ -44,7 +44,8 @@ class Recommend(generics.ListAPIView):
     serializer_class = serializers.TracksSerializer
 
     def get_queryset(self):
-        isrc = self.request.query_params.get('isrc', None)
+        isrc = self.kwargs.get('isrc', None)
         recommended_isrcs = similarity_engine.recommend(isrc)
+        recommended_isrcs.remove(isrc)
         qs = models.Track.objects.filter(isrc__in=recommended_isrcs)
         return qs
