@@ -1,0 +1,11 @@
+version: "3.4"
+services:
+  postgresql:
+    image: postgres
+    volumes:
+        - "./data/postgresql/data:/var/lib/postgresql/data"
+    restart: always
+    env_file:
+        - conf/postgres.env
+    ports:
+        - "0.0.0.0:5432:5432"
