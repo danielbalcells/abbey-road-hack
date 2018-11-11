@@ -7,6 +7,8 @@ from django.contrib.postgres.search import SearchVector
 
 from . import models, serializers
 
+import similarity_engine
+
 class Filterable:
 
     filter_dict = {}
@@ -34,4 +36,15 @@ class Search(generics.ListAPIView):
         if q is not None:
             qs = qs.annotate(search=SearchVector('title', 'artist'))
         qs = qs.filter(search=q)
+        return qs
+
+
+class Recommend(generics.ListAPIView):
+
+    serializer_class = serializers.TracksSerializer
+
+    def get_queryset(self):
+        isrc = self.request.query_params.get('isrc', None)
+        recommended_isrcs = similarity_engine.recommend(isrc)
+        qs = models.Track.objects.filter(isrc__in=recommended_isrcs)
         return qs
